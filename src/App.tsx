@@ -178,7 +178,12 @@ export default function App() {
         taskType: taskType
       })
     });
-    if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = errorData.error?.message || `APIエラー: ${response.status}`;
+      alert(`埋め込み生成に失敗しました: ${errorMessage}\nモデル: ${selectedModels.embedding}`);
+      throw new Error(errorMessage);
+    }
     const result = await response.json();
     return result.embedding.values;
   };
