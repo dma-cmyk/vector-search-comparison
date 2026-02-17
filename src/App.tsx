@@ -147,6 +147,12 @@ export default function App() {
       const embedding = data.models.filter(m => m.supportedGenerationMethods.includes("embedContent")).map(m => m.name.replace('models/', ''));
       const text = data.models.filter(m => m.supportedGenerationMethods.includes("generateContent")).map(m => m.name.replace('models/', ''));
       setAvailableModels({ text, embedding });
+      
+      // 自動選択ロジック: 現在の選択がリストにない場合、先頭のモデルを選択する
+      setSelectedModels(prev => ({
+        text: text.includes(prev.text) ? prev.text : (text[0] || prev.text),
+        embedding: embedding.includes(prev.embedding) ? prev.embedding : (embedding[0] || prev.embedding)
+      }));
     } catch (err) { console.error(err); }
   };
 
