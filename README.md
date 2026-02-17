@@ -34,6 +34,7 @@ Google Gemini API の Embeddings を活用し、検索ロジックの違い（�
 ### ステップ 3: データの準備（インデックス構築）
 1.  メニューから **「ライブラリ」** タブをクリックします。
 2.  **「一括インデックス構築を実行」** ボタンを押します。
+    *   ※使用するモデル（解析/埋め込み）を変更したい場合は、ボタンの下にあるプルダウンで選択できます。
 3.  数秒〜数十秒待つと、内蔵された50件のデータがベクトル化され、検索できる状態になります。
 
 ### ステップ 4: 検索の実験
@@ -75,10 +76,22 @@ npm run dev
 
 ブラウザで `http://localhost:5173` が自動的に開きます。
 
+## 📂 ディレクトリ構造
+```
+.
+├── src/          # ソースコード
+│   ├── App.tsx   # メインロジック
+│   └── ...
+├── data/         # データファイル置き場
+│   └── vector_lab_export.json # エクスポート済みのサンプルデータ（ベクトル付き）
+├── index.html    # エントリーポイント
+└── README.md     # 本ファイル
+```
+
 ## 🛠️ 技術スタック
 
 *   **Frontend:** React, Tailwind CSS, Vite
-*   **AI / LLM:** Google Gemini API (gemini-2.5-flash-preview等)
+*   **AI / LLM:** Google Gemini API (gemini-2.0-flash, text-embedding-004等)
 *   **Vector Search:** Client-side Cosine Similarity
 *   **Database:** IndexedDB (idb)
 *   **Hosting:** GitHub Pages
