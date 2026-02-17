@@ -144,7 +144,9 @@ export default function App() {
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
       if (!response.ok) throw new Error("モデル情報の取得に失敗しました");
       const data = await response.json();
-      const embedding = data.models.filter(m => m.supportedGenerationMethods.includes("embedContent")).map(m => m.name.replace('models/', ''));
+      const embedding = data.models
+        .filter(m => m.supportedGenerationMethods.includes("embedContent") && !m.name.includes("text-embedding-004"))
+        .map(m => m.name.replace('models/', ''));
       const text = data.models.filter(m => m.supportedGenerationMethods.includes("generateContent")).map(m => m.name.replace('models/', ''));
       setAvailableModels({ text, embedding });
       
