@@ -306,6 +306,34 @@ export default function App() {
     a.click();
   };
 
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        if (!Array.isArray(json)) throw new Error("JSON形式が正しくありません（配列である必要があります）");
+        
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        let count = 0;
+        for (const item of json) {
+          if (item.site_name && item.summary_embedding) {
+            await store.put(item);
+            count++;
+          }
+        }
+        alert(`${count} 件のデータをインポートしました！`);
+        refreshData(db);
+      } catch (err) {
+        alert("インポートに失敗しました: " + err);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = ""; // Reset input
+  };
+
   // 検索結果カード
   const ResultCard = ({ result, score, rank }) => (
     <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-indigo-400 transition-all group flex flex-col h-full animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -573,6 +601,10 @@ export default function App() {
                 <p className="text-sm text-slate-500 font-medium">現在DBに保存されている検索対象データの詳細です。</p>
               </div>
               <div className="flex items-center gap-4">
+                <label className="p-2.5 text-slate-400 hover:text-indigo-600 transition-all bg-white rounded-xl border border-slate-100 shadow-sm cursor-pointer" title="JSONファイルをインポート">
+                  <Upload size={22} />
+                  <input type="file" accept=".json" className="hidden" onChange={handleImport} />
+                </label>
                 <button onClick={exportData} className="p-2.5 text-slate-400 hover:text-indigo-600 transition-all bg-white rounded-xl border border-slate-100 shadow-sm" title="JSON形式でエクスポート"><Download size={22} /></button>
                 <div className="w-px h-8 bg-slate-200"></div>
                 <div className="text-right">
