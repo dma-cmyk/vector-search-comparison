@@ -115,8 +115,8 @@ export default function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [availableModels, setAvailableModels] = useState({ text: [], embedding: [] });
   const [selectedModels, setSelectedModels] = useState({
-    text: "gemini-2.5-flash-preview-09-2025",
-    embedding: "embedding-001"
+    text: "gemini-2.0-flash",
+    embedding: "text-embedding-004"
   });
 
   const DB_NAME = "VectorLab_Japanese_V8";
