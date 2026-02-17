@@ -125,13 +125,13 @@ export default function App() {
   useEffect(() => {
     const request = indexedDB.open(DB_NAME, 1);
     request.onupgradeneeded = (e) => {
-      const db = e.target.result;
+      const db = (e.target as any).result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         db.createObjectStore(STORE_NAME, { keyPath: "site_name" });
       }
     };
     request.onsuccess = (e) => {
-      const db = e.target.result;
+      const db = (e.target as any).result;
       setDb(db);
       refreshData(db);
     };
@@ -199,7 +199,7 @@ export default function App() {
         const blob = await imgResponse.blob();
         const base64 = await new Promise(r => {
           const reader = new FileReader();
-          reader.onloadend = () => r(reader.result.split(',')[1]);
+          reader.onloadend = () => r((reader.result as string).split(',')[1]);
           reader.readAsDataURL(blob);
         });
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModels.text}:generateContent?key=${apiKey}`;
@@ -586,7 +586,7 @@ export default function App() {
                   ))}
                   {sites.length === 0 && (
                     <tr>
-                      <td colSpan="5" className="px-8 py-24 text-center text-slate-300 italic font-bold">
+                      <td colSpan={5} className="px-8 py-24 text-center text-slate-300 italic font-bold">
                         インデックスデータがありません。ライブラリから構築してください。
                       </td>
                     </tr>
