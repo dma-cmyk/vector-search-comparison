@@ -466,6 +466,32 @@ export default function App() {
                 <RefreshCw size={14} className={status === "indexing" ? "animate-spin" : ""} /> 一括インデックス構築を実行
               </button>
             </div>
+            
+            {/* モデル選択設定（ライブラリタブ用） */}
+            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row gap-4 items-center text-xs">
+              <span className="font-bold text-slate-500 whitespace-nowrap">使用モデル設定:</span>
+              <div className="flex gap-2 items-center w-full sm:w-auto">
+                <span className="text-slate-400">解析:</span>
+                <select 
+                  className="bg-white px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-indigo-500 w-full sm:w-auto"
+                  value={selectedModels.text} 
+                  onChange={(e) => setSelectedModels(p => ({ ...p, text: e.target.value }))}
+                >
+                  {availableModels.text.map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+              <div className="flex gap-2 items-center w-full sm:w-auto">
+                <span className="text-slate-400">埋め込み:</span>
+                <select 
+                  className="bg-white px-3 py-2 rounded-lg border border-slate-200 outline-none focus:border-indigo-500 w-full sm:w-auto"
+                  value={selectedModels.embedding} 
+                  onChange={(e) => setSelectedModels(p => ({ ...p, embedding: e.target.value }))}
+                >
+                  {availableModels.embedding.map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {INITIAL_SITES.map((site, idx) => (
                 <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 group hover:border-indigo-400 transition-all">
